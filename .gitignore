@@ -9,3 +9,5 @@ venv/
 *.tmp
 
 .DS_Store
+
+.jarvis/
