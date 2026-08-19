@@ -11,3 +11,9 @@ venv/
 .DS_Store
 
 .jarvis/
+
+# Generated hardware-test artifacts
+artifacts/**/*.wav
+artifacts/**/*.jpg
+artifacts/**/*.jpeg
+artifacts/**/*.png
