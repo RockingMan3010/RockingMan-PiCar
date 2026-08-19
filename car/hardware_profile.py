@@ -27,12 +27,22 @@ ARM_CHANNEL = 2
 WRIST_CHANNEL = 3
 GRIPPER_CHANNEL = 4
 
+# Conservative ranges physically validated so far.
+ULTRASONIC_PAN_MAX_SAFE_OFFSET = 5
+ARM_MAX_SAFE_OFFSET = 5
+WRIST_MAX_SAFE_OFFSET = 5
+GRIPPER_MAX_SAFE_OPEN = 5
+
 
 # Steering calibration
 #
 # Vendor nominal center = relative 0
 # Physical chassis center = relative -5
+
 STEERING_CENTER = -5
+
+# Physically validated steering range around calibrated center.
+STEERING_MAX_SAFE_OFFSET = 15
 
 # Verified steering direction:
 # negative -> left

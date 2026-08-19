@@ -5,6 +5,7 @@
 import sys
 from pathlib import Path
 
+
 ADEEPT_SERVER = Path.home() / "Adeept_PiCar-Pro" / "Server"
 
 if not ADEEPT_SERVER.is_dir():
@@ -44,11 +45,13 @@ from hardware_profile import (
 
     LEFT_HEADLIGHT_SWITCH,
     RIGHT_HEADLIGHT_SWITCH,
+
+    STEERING_MAX_SAFE_OFFSET,
+    ULTRASONIC_PAN_MAX_SAFE_OFFSET,
+    ARM_MAX_SAFE_OFFSET,
+    WRIST_MAX_SAFE_OFFSET,
+    GRIPPER_MAX_SAFE_OPEN,
 )
-
-
-# Only this small range has been physically validated so far.
-VALIDATED_SERVO_STEP_MAX = 5
 
 
 def clamp(value, minimum, maximum):
@@ -56,6 +59,8 @@ def clamp(value, minimum, maximum):
 
 
 class RockingManRobot:
+    """Safe actuator interface for the RockingMan PiCar-Pro."""
+
     def __init__(self):
         self.servo = RPIservo.ServoCtrl()
 
@@ -96,7 +101,7 @@ class RockingManRobot:
         degrees = clamp(
             abs(degrees),
             0,
-            VALIDATED_SERVO_STEP_MAX,
+            STEERING_MAX_SAFE_OFFSET,
         )
 
         target = (
@@ -113,7 +118,7 @@ class RockingManRobot:
         degrees = clamp(
             abs(degrees),
             0,
-            VALIDATED_SERVO_STEP_MAX,
+            STEERING_MAX_SAFE_OFFSET,
         )
 
         target = (
@@ -140,7 +145,7 @@ class RockingManRobot:
         degrees = clamp(
             abs(degrees),
             0,
-            VALIDATED_SERVO_STEP_MAX,
+            ULTRASONIC_PAN_MAX_SAFE_OFFSET,
         )
 
         self.servo.moveAngle(
@@ -152,7 +157,7 @@ class RockingManRobot:
         degrees = clamp(
             abs(degrees),
             0,
-            VALIDATED_SERVO_STEP_MAX,
+            ULTRASONIC_PAN_MAX_SAFE_OFFSET,
         )
 
         self.servo.moveAngle(
@@ -174,7 +179,7 @@ class RockingManRobot:
         degrees = clamp(
             abs(degrees),
             0,
-            VALIDATED_SERVO_STEP_MAX,
+            ARM_MAX_SAFE_OFFSET,
         )
 
         self.servo.moveAngle(
@@ -186,7 +191,7 @@ class RockingManRobot:
         degrees = clamp(
             abs(degrees),
             0,
-            VALIDATED_SERVO_STEP_MAX,
+            ARM_MAX_SAFE_OFFSET,
         )
 
         self.servo.moveAngle(
@@ -208,7 +213,7 @@ class RockingManRobot:
         degrees = clamp(
             abs(degrees),
             0,
-            VALIDATED_SERVO_STEP_MAX,
+            WRIST_MAX_SAFE_OFFSET,
         )
 
         self.servo.moveAngle(
@@ -220,7 +225,7 @@ class RockingManRobot:
         degrees = clamp(
             abs(degrees),
             0,
-            VALIDATED_SERVO_STEP_MAX,
+            WRIST_MAX_SAFE_OFFSET,
         )
 
         self.servo.moveAngle(
@@ -242,7 +247,7 @@ class RockingManRobot:
         degrees = clamp(
             abs(degrees),
             GRIPPER_MIN_SAFE,
-            VALIDATED_SERVO_STEP_MAX,
+            GRIPPER_MAX_SAFE_OPEN,
         )
 
         self.servo.moveAngle(
@@ -299,5 +304,10 @@ class RockingManRobot:
     def __enter__(self):
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback):
+    def __exit__(
+        self,
+        exc_type,
+        exc_value,
+        traceback,
+    ):
         self.shutdown()
